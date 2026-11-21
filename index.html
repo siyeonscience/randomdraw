@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Pen+Script&display=swap" rel="stylesheet" />
+  <link rel="preload" href="fonts/KyoboHandwriting2025.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="style.css" />
   <script src="vendor/xlsx.full.min.js" defer></script>
   <script src="app.js" defer></script>
@@ -31,16 +32,23 @@
 
         <div class="result" id="result" hidden>
           <div class="paper-wrap">
-            <div class="paper folded" id="paper">
-              <div class="half bottom">
-                <div class="inner"><span class="word" data-word></span></div>
-              </div>
-              <div class="half top flap">
-                <div class="face front">
-                  <div class="inner"><span class="word" data-word></span></div>
-                </div>
+            <div class="paper f2" id="paper">
+              <div class="q q-br"><div class="face front"><div class="inner"><span class="word" data-word></span></div></div></div>
+              <div class="q q-tr flap">
+                <div class="face front"><div class="inner"><span class="word" data-word></span></div></div>
                 <div class="face back"></div>
               </div>
+              <div class="col-left">
+                <div class="q q-bl">
+                  <div class="face front"><div class="inner"><span class="word" data-word></span></div></div>
+                  <div class="face back"></div>
+                </div>
+                <div class="q q-tl flap">
+                  <div class="face front"><div class="inner"><span class="word" data-word></span></div></div>
+                  <div class="face back"></div>
+                </div>
+              </div>
+              <div class="tape"></div>
             </div>
           </div>
           <p class="sr-only" id="resultAnnounce" aria-live="polite"></p>

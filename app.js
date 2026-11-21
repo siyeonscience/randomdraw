@@ -3,7 +3,8 @@
 
   const STORAGE_KEY = "randomdraw.words.v1";
   const MAX_VISUAL_SLIPS = 24;
-  const SLIP_COLORS = ["#fffaf0", "#fff3c9", "#ffe3e0", "#e3f1ff", "#e6f7e1", "#f1e6ff"];
+  const SLIP_W = 60;
+  const SLIP_H = 43;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // ---------- 상태 ----------
@@ -298,8 +299,8 @@
 
   function placeRandom(slip) {
     const { w, h } = stageSize();
-    const x = rand(16, Math.max(16, w - 88));
-    const y = rand(16, Math.max(16, h - 62));
+    const x = rand(16, Math.max(16, w - SLIP_W - 22));
+    const y = rand(16, Math.max(16, h - SLIP_H - 22));
     const r = rand(-40, 40);
     slip.style.transform = `translate(${x}px, ${y}px) rotate(${r}deg)`;
     slip.style.zIndex = String(Math.floor(rand(1, 50)));
@@ -311,21 +312,25 @@
     for (let i = 0; i < n; i++) {
       const s = document.createElement("div");
       s.className = "slip";
-      s.style.setProperty("--slip-color", SLIP_COLORS[i % SLIP_COLORS.length]);
       placeRandom(s);
       pile.appendChild(s);
     }
+  }
+
+  function getPaperWidth() {
+    return Math.min(340, window.innerWidth * 0.8);
   }
 
   function setWord(text) {
     paper.querySelectorAll("[data-word]").forEach((el) => { el.textContent = text; });
     // 글자 수에 따라 크기 조절
     const len = [...text].length;
-    let size = "3.6rem";
-    if (len > 4) size = "3rem";
-    if (len > 8) size = "2.4rem";
-    if (len > 14) size = "1.9rem";
-    if (len > 24) size = "1.5rem";
+    let size = "4.4rem";
+    if (len > 3) size = "3.6rem";
+    if (len > 5) size = "2.8rem";
+    if (len > 8) size = "2.2rem";
+    if (len > 14) size = "1.8rem";
+    if (len > 24) size = "1.4rem";
     paper.style.setProperty("--word-size", size);
   }
 
@@ -387,8 +392,8 @@
     const { w, h } = stageSize();
     pile.classList.add("gather");
     slips.forEach((s) => {
-      const x = w / 2 - 36 + rand(-30, 30);
-      const y = h / 2 - 23 + rand(-22, 22);
+      const x = w / 2 - SLIP_W / 2 + rand(-30, 30);
+      const y = h / 2 - SLIP_H / 2 + rand(-22, 22);
       s.style.transform = `translate(${x}px, ${y}px) rotate(${rand(-30, 30)}deg)`;
     });
     await sleep(520);
@@ -397,24 +402,25 @@
     const chosen = slips[randomInt(slips.length)];
     chosen.classList.add("chosen");
     chosen.style.zIndex = "100";
-    chosen.style.transform = `translate(${w / 2 - 36}px, ${h / 2 - 23}px) rotate(0deg) scale(2.2)`;
+    // 결과 쪽지의 접힌 크기(종이의 1/4)와 맞춰서 키움
+    const scale = (getPaperWidth() / 2) / SLIP_W;
+    chosen.style.transform = `translate(${w / 2 - SLIP_W / 2}px, ${h / 2 - SLIP_H / 2}px) rotate(0deg) scale(${scale})`;
     slips.forEach((s) => { if (s !== chosen) s.classList.add("fade"); });
     await sleep(650);
 
-    // 4) 화면 중앙에 쪽지 등장 → 펼치기
-    pile.hidden = true;
+    // 4) 같은 자리에서 두 번 접힌 쪽지로 바꿔치기 → 두 단계로 펼치기
     setWord(pick.text);
-    paper.classList.add("folded");
-    // 팝인 애니메이션 재시작
-    const wrap = paper.parentElement;
-    wrap.style.animation = "none";
-    void wrap.offsetWidth;
-    wrap.style.animation = "";
+    paper.classList.remove("f1", "taped");
+    paper.classList.add("f2");
     result.hidden = false;
-    await sleep(600);
+    pile.hidden = true;
+    await sleep(250);
 
-    paper.classList.remove("folded");
-    await sleep(900);
+    paper.classList.replace("f2", "f1"); // 왼쪽 절반 펼치기
+    await sleep(850);
+    paper.classList.remove("f1"); // 위쪽 절반 펼치기
+    await sleep(850);
+    paper.classList.add("taped");
 
     lastPickId = pick.id;
     resultAnnounce.textContent = `뽑힌 단어: ${pick.text}`;
@@ -434,6 +440,11 @@
   });
 
   // ---------- 시작 ----------
+  // 손글씨 폰트를 미리 받아 둬서 쪽지가 펼쳐질 때 글꼴이 바뀌어 보이지 않게
+  if (document.fonts && document.fonts.load) {
+    document.fonts.load('1em "Kyobo Handwriting 2025"', "가").catch(() => {});
+  }
+
   load();
   // 저장된 단어가 있으면 바로 뽑기 화면, 없으면 등록 화면부터
   showScreen(words.length ? "draw" : "setup");

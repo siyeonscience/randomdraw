@@ -18,4 +18,5 @@
 ## 파일 구성
 
 - `index.html`, `style.css`, `app.js` – 앱 본체
+- `fonts/KyoboHandwriting2025.woff2` – 쪽지 글씨용 교보 손글씨 2025 (한글·영문·기호만 남겨 WOFF2로 변환, © 교보문고)
 - `vendor/xlsx.full.min.js` – 엑셀 파일 파싱용 [SheetJS](https://sheetjs.com) 0.18.5 (Apache-2.0, `vendor/xlsx.LICENSE`)
