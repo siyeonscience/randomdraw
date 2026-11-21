@@ -39,6 +39,12 @@
   const drawnBox = $("drawnBox");
   const drawnCount = $("drawnCount");
   const restoreBtn = $("restoreBtn");
+  const setupScreen = $("setupScreen");
+  const drawScreen = $("drawScreen");
+  const setupMessage = $("setupMessage");
+  const doneBtn = $("doneBtn");
+  const editBtn = $("editBtn");
+  let screen = "setup";
 
   // ---------- 유틸 ----------
   const sleep = (ms) => new Promise((r) => setTimeout(r, reduceMotion ? Math.min(ms, 30) : ms));
@@ -59,9 +65,38 @@
   }
 
   function showMessage(text, isError = true) {
-    messageEl.textContent = text;
-    messageEl.style.color = isError ? "" : "var(--ink-soft)";
+    const el = screen === "setup" ? setupMessage : messageEl;
+    el.textContent = text;
+    el.style.color = isError ? "" : "var(--ink-soft)";
   }
+
+  // ---------- 화면 전환 ----------
+  function showScreen(name) {
+    screen = name;
+    setupScreen.hidden = name !== "setup";
+    drawScreen.hidden = name !== "draw";
+    messageEl.textContent = "";
+    setupMessage.textContent = "";
+    if (name === "draw") {
+      lastPickId = null;
+      showIdle();
+    }
+    renderAll();
+    window.scrollTo(0, 0);
+  }
+
+  doneBtn.addEventListener("click", () => {
+    if (!words.length) {
+      showMessage("먼저 단어를 하나 이상 등록해 주세요.");
+      return;
+    }
+    showScreen("draw");
+  });
+
+  editBtn.addEventListener("click", () => {
+    if (busy) return;
+    showScreen("setup");
+  });
 
   // ---------- 저장 ----------
   function save() {
@@ -249,12 +284,14 @@
     const lastIsCandidate = words.some((w) => w.id === lastPickId && !w.drawn);
     moreBtn.disabled = busy || left - (lastIsCandidate ? 1 : 0) <= 0;
     stageEmpty.hidden = words.length > 0 || !result.hidden;
+    editBtn.disabled = busy;
+    doneBtn.textContent = words.length ? `등록 완료 · 쪽지 ${words.length}장으로 뽑으러 가기` : "등록 완료";
   }
 
   function renderAll() {
     renderList();
     renderStatus();
-    if (result.hidden && !busy) renderPile();
+    if (screen === "draw" && result.hidden && !busy) renderPile();
   }
 
   function stageSize() {
@@ -319,7 +356,7 @@
     const pool = candidates();
     if (!pool.length) {
       renderAll();
-      showMessage(words.length ? "남은 쪽지가 없어요. 제외된 쪽지를 되돌리거나 단어를 추가해 주세요." : "먼저 단어를 등록해 주세요.");
+      showMessage(words.length ? "남은 쪽지가 없어요. '단어 수정'에서 제외된 쪽지를 되돌리거나 단어를 추가해 주세요." : "먼저 단어를 등록해 주세요.");
       return;
     }
 
@@ -395,10 +432,11 @@
   let resizeTimer;
   window.addEventListener("resize", () => {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => { if (!busy && result.hidden) renderPile(); }, 150);
+    resizeTimer = setTimeout(() => { if (screen === "draw" && !busy && result.hidden) renderPile(); }, 150);
   });
 
   // ---------- 시작 ----------
   load();
-  renderAll();
+  // 저장된 단어가 있으면 바로 뽑기 화면, 없으면 등록 화면부터
+  showScreen(words.length ? "draw" : "setup");
 })();

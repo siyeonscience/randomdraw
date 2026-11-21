@@ -18,13 +18,17 @@
   </header>
 
   <main class="layout">
-    <!-- 추첨 영역 -->
-    <section class="draw-area" aria-label="쪽지 추첨">
+    <!-- 추첨 화면 -->
+    <section class="draw-area screen" id="drawScreen" aria-label="쪽지 추첨" hidden>
+      <div class="screen-bar">
+        <button class="btn btn-ghost" id="editBtn" type="button">← 단어 수정</button>
+        <span class="screen-title">쪽지 뽑기</span>
+      </div>
       <div class="stage" id="stage">
         <div class="pile" id="pile" aria-hidden="true"></div>
 
         <p class="stage-empty" id="stageEmpty">
-          아직 쪽지가 없어요.<br />단어 등록에서 단어를 넣어 주세요.
+          아직 쪽지가 없어요.<br />'단어 수정'에서 단어를 넣어 주세요.
         </p>
 
         <div class="result" id="result" hidden>
@@ -65,9 +69,10 @@
       </div>
     </section>
 
-    <!-- 단어 등록 영역 -->
-    <aside class="panel" aria-label="단어 등록">
+    <!-- 단어 등록 화면 -->
+    <section class="panel screen" id="setupScreen" aria-label="단어 등록">
       <h2>단어 등록</h2>
+      <p class="hint">쪽지에 넣을 단어를 등록한 뒤 아래 <b>등록 완료</b>를 눌러 주세요.</p>
 
       <div class="field">
         <label for="textInput">텍스트로 입력</label>
@@ -101,7 +106,12 @@
         </div>
         <p class="hint">'추가로 뽑기'로 이미 뽑혀서 후보에서 빠진 쪽지예요.</p>
       </div>
-    </aside>
+
+      <div class="done-area">
+        <p class="message" id="setupMessage" role="status"></p>
+        <button class="btn btn-primary btn-big btn-block" id="doneBtn" type="button">등록 완료</button>
+      </div>
+    </section>
   </main>
 </body>
 </html>

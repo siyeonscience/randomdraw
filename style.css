@@ -54,19 +54,38 @@ body {
 
 /* ---------- 레이아웃 ---------- */
 .layout {
-  max-width: 1080px;
+  max-width: 720px;
   margin: 0 auto;
   padding-block: 16px;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
-  gap: 20px;
-  align-items: start;
 }
-@media (max-width: 860px) {
-  .layout { grid-template-columns: minmax(0, 1fr); }
+
+.screen { animation: screen-in 0.35s ease both; }
+@keyframes screen-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
 }
+
+.screen-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.screen-bar .btn-ghost { font-size: 1rem; padding-left: 4px; }
+.screen-title { color: var(--ink-soft); font-size: 0.95rem; }
+
+.done-area {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.panel > .hint { margin-top: -6px; margin-bottom: 18px; }
 
 /* ---------- 추첨 무대 ---------- */
 .stage {
@@ -439,7 +458,7 @@ textarea:focus { outline: none; border-color: var(--accent); }
 
 @media (prefers-reduced-motion: reduce) {
   .slip, .paper, .half.top { transition-duration: 0.01s !important; }
-  .paper-wrap { animation: none; }
+  .paper-wrap, .screen { animation: none; }
 }
 
 .btn-danger.armed { background: var(--danger); color: #fff; }
