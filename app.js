@@ -34,7 +34,6 @@
   const fileDrop = $("fileDrop");
   const resetBtn = $("resetBtn");
   const wordList = $("wordList");
-  const listEmpty = $("listEmpty");
   const wordCount = $("wordCount");
   const drawnBox = $("drawnBox");
   const drawnCount = $("drawnCount");
@@ -140,7 +139,7 @@
     }
     const n = addWords(list);
     textInput.value = "";
-    showMessage(`쪽지 ${n}장을 추가했어요.`, false);
+    showMessage("");
   });
 
   textInput.addEventListener("keydown", (e) => {
@@ -178,7 +177,7 @@
         return;
       }
       const n = addWords(list);
-      showMessage(`'${file.name}'에서 쪽지 ${n}장을 추가했어요.`, false);
+      showMessage("");
     } catch (err) {
       console.error(err);
       showMessage(err.message || "파일을 읽지 못했어요.");
@@ -225,7 +224,7 @@
     save();
     showIdle();
     renderAll();
-    showMessage("단어 목록을 초기화했어요.", false);
+    showMessage("");
   });
 
   restoreBtn.addEventListener("click", () => {
@@ -233,7 +232,7 @@
     words.forEach((w) => { w.drawn = false; });
     save();
     renderAll();
-    showMessage("제외된 쪽지를 모두 후보로 되돌렸어요.", false);
+    showMessage("");
   });
 
   wordList.addEventListener("click", (e) => {
@@ -265,7 +264,6 @@
       frag.appendChild(li);
     });
     wordList.appendChild(frag);
-    listEmpty.hidden = words.length > 0;
     wordCount.textContent = words.length;
 
     const drawnN = words.filter((w) => w.drawn).length;

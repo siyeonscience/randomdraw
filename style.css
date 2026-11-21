@@ -50,7 +50,6 @@ body {
   font-weight: 400;
   letter-spacing: 1px;
 }
-.subtitle { margin: 0; color: var(--ink-soft); }
 
 /* ---------- 레이아웃 ---------- */
 .layout {
@@ -75,7 +74,6 @@ body {
   margin-bottom: 10px;
 }
 .screen-bar .btn-ghost { font-size: 1rem; padding-left: 4px; }
-.screen-title { color: var(--ink-soft); font-size: 0.95rem; }
 
 .done-area {
   margin-top: 22px;
@@ -85,7 +83,7 @@ body {
   flex-direction: column;
   gap: 8px;
 }
-.panel > .hint { margin-top: -6px; margin-bottom: 18px; }
+
 
 /* ---------- 추첨 무대 ---------- */
 .stage {
@@ -452,7 +450,6 @@ textarea:focus { outline: none; border-color: var(--accent); }
   border-radius: 4px;
 }
 .chip button:hover { background: var(--line); color: var(--ink); }
-.list-empty { color: var(--ink-soft); font-size: 0.9rem; margin: 0; }
 
 .drawn-box { margin-top: 16px; padding-top: 6px; border-top: 1px dashed var(--line); }
 
@@ -462,3 +459,4 @@ textarea:focus { outline: none; border-color: var(--accent); }
 }
 
 .btn-danger.armed { background: var(--danger); color: #fff; }
+.message:empty { display: none; }

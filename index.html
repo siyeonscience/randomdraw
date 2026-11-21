@@ -14,7 +14,6 @@
 <body>
   <header class="app-header">
     <h1>쪽지 뽑기</h1>
-    <p class="subtitle">단어를 쪽지에 적어 두고, 하나를 뽑아보세요.</p>
   </header>
 
   <main class="layout">
@@ -22,7 +21,6 @@
     <section class="draw-area screen" id="drawScreen" aria-label="쪽지 추첨" hidden>
       <div class="screen-bar">
         <button class="btn btn-ghost" id="editBtn" type="button">← 단어 수정</button>
-        <span class="screen-title">쪽지 뽑기</span>
       </div>
       <div class="stage" id="stage">
         <div class="pile" id="pile" aria-hidden="true"></div>
@@ -72,7 +70,6 @@
     <!-- 단어 등록 화면 -->
     <section class="panel screen" id="setupScreen" aria-label="단어 등록">
       <h2>단어 등록</h2>
-      <p class="hint">쪽지에 넣을 단어를 등록한 뒤 아래 <b>등록 완료</b>를 눌러 주세요.</p>
 
       <div class="field">
         <label for="textInput">텍스트로 입력</label>
@@ -87,7 +84,7 @@
           <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" />
           <span class="file-drop-text">
             <b>파일 선택</b> 또는 여기로 끌어다 놓기<br />
-            <small>.xlsx · .xls · .csv — 값이 있는 칸마다 쪽지 한 장</small>
+            <small>.xlsx · .xls · .csv</small>
           </span>
         </label>
       </div>
@@ -97,14 +94,12 @@
         <button class="btn btn-danger btn-small" id="resetBtn" type="button">단어 목록 초기화</button>
       </div>
       <ul class="chips" id="wordList"></ul>
-      <p class="list-empty" id="listEmpty">등록된 단어가 없어요.</p>
 
       <div class="drawn-box" id="drawnBox" hidden>
         <div class="list-head">
           <h3>제외된 쪽지 <span class="count" id="drawnCount">0</span></h3>
           <button class="btn btn-ghost btn-small" id="restoreBtn" type="button">모두 후보로 되돌리기</button>
         </div>
-        <p class="hint">'추가로 뽑기'로 이미 뽑혀서 후보에서 빠진 쪽지예요.</p>
       </div>
 
       <div class="done-area">
