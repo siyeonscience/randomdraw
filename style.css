@@ -1,4 +1,5 @@
 :root {
+  color-scheme: light;
   --bg: #f4efe6;
   --surface: #fffdf8;
   --ink: #3b3127;
@@ -55,7 +56,9 @@ body {
 .layout {
   max-width: 1080px;
   margin: 0 auto;
-  padding: 16px;
+  padding-block: 16px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
   display: grid;
   grid-template-columns: minmax(0, 1fr) 340px;
   gap: 20px;
@@ -438,3 +441,5 @@ textarea:focus { outline: none; border-color: var(--accent); }
   .slip, .paper, .half.top { transition-duration: 0.01s !important; }
   .paper-wrap { animation: none; }
 }
+
+.btn-danger.armed { background: var(--danger); color: #fff; }

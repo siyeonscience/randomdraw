@@ -164,10 +164,27 @@
     handleFile(e.dataTransfer.files[0]);
   });
 
+  // 확인 창(confirm) 대신 버튼을 한 번 더 누르면 지워지는 방식
+  let resetArmed = false;
+  let resetTimer;
+  function disarmReset() {
+    resetArmed = false;
+    clearTimeout(resetTimer);
+    resetBtn.textContent = "단어 목록 초기화";
+    resetBtn.classList.remove("armed");
+  }
+
   resetBtn.addEventListener("click", () => {
     if (busy) return;
     if (!words.length) return;
-    if (!confirm("등록된 단어를 모두 지울까요?")) return;
+    if (!resetArmed) {
+      resetArmed = true;
+      resetBtn.textContent = "한 번 더 누르면 모두 삭제";
+      resetBtn.classList.add("armed");
+      resetTimer = setTimeout(disarmReset, 3000);
+      return;
+    }
+    disarmReset();
     words = [];
     lastPickId = null;
     save();
