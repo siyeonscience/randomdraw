@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>쪽지 뽑기</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Pen+Script&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="vendor/xlsx.full.min.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="app-header">
+    <h1>쪽지 뽑기</h1>
+    <p class="subtitle">단어를 쪽지에 적어 두고, 하나를 뽑아보세요.</p>
+  </header>
+
+  <main class="layout">
+    <!-- 추첨 영역 -->
+    <section class="draw-area" aria-label="쪽지 추첨">
+      <div class="stage" id="stage">
+        <div class="pile" id="pile" aria-hidden="true"></div>
+
+        <p class="stage-empty" id="stageEmpty">
+          아직 쪽지가 없어요.<br />오른쪽에서 단어를 등록해 주세요.
+        </p>
+
+        <div class="result" id="result" hidden>
+          <div class="paper-wrap">
+            <div class="paper folded" id="paper">
+              <div class="half bottom">
+                <div class="inner"><span class="word" data-word></span></div>
+              </div>
+              <div class="half top flap">
+                <div class="face front">
+                  <div class="inner"><span class="word" data-word></span></div>
+                </div>
+                <div class="face back"></div>
+              </div>
+            </div>
+          </div>
+          <p class="sr-only" id="resultAnnounce" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="status" id="status">남은 쪽지 0장</div>
+
+        <div class="main-actions" id="mainActions">
+          <button class="btn btn-primary btn-big" id="drawBtn" type="button">뽑기</button>
+        </div>
+
+        <div class="result-actions" id="resultActions" hidden>
+          <button class="btn btn-secondary" id="redrawBtn" type="button" title="방금 뽑힌 쪽지도 후보에 포함해서 다시 뽑아요">
+            다시 뽑기
+          </button>
+          <button class="btn btn-primary" id="moreBtn" type="button" title="방금 뽑힌 쪽지는 빼고 다시 뽑아요">
+            추가로 뽑기
+          </button>
+        </div>
+
+        <p class="message" id="message" role="status"></p>
+      </div>
+    </section>
+
+    <!-- 단어 등록 영역 -->
+    <aside class="panel" aria-label="단어 등록">
+      <h2>단어 등록</h2>
+
+      <div class="field">
+        <label for="textInput">텍스트로 입력</label>
+        <textarea id="textInput" rows="3" placeholder="사과, 바나나 / 포도, 딸기"></textarea>
+        <p class="hint"><b>,</b> 또는 <b>/</b> 로 구분하면 각각 다른 쪽지에 들어가요.</p>
+        <button class="btn btn-secondary btn-block" id="addTextBtn" type="button">단어 추가</button>
+      </div>
+
+      <div class="field">
+        <span class="label">엑셀 파일로 등록</span>
+        <label class="file-drop" id="fileDrop">
+          <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" />
+          <span class="file-drop-text">
+            <b>파일 선택</b> 또는 여기로 끌어다 놓기<br />
+            <small>.xlsx · .xls · .csv — 값이 있는 칸마다 쪽지 한 장</small>
+          </span>
+        </label>
+      </div>
+
+      <div class="list-head">
+        <h3>등록된 쪽지 <span class="count" id="wordCount">0</span></h3>
+        <button class="btn btn-danger btn-small" id="resetBtn" type="button">단어 목록 초기화</button>
+      </div>
+      <ul class="chips" id="wordList"></ul>
+      <p class="list-empty" id="listEmpty">등록된 단어가 없어요.</p>
+
+      <div class="drawn-box" id="drawnBox" hidden>
+        <div class="list-head">
+          <h3>제외된 쪽지 <span class="count" id="drawnCount">0</span></h3>
+          <button class="btn btn-ghost btn-small" id="restoreBtn" type="button">모두 후보로 되돌리기</button>
+        </div>
+        <p class="hint">'추가로 뽑기'로 이미 뽑혀서 후보에서 빠진 쪽지예요.</p>
+      </div>
+    </aside>
+  </main>
+</body>
+</html>
