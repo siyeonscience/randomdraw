@@ -410,7 +410,7 @@
 
     // 4) 같은 자리에서 두 번 접힌 쪽지로 바꿔치기 → 두 단계로 펼치기
     setWord(pick.text);
-    paper.classList.remove("f1", "taped");
+    paper.classList.remove("f1");
     paper.classList.add("f2");
     result.hidden = false;
     pile.hidden = true;
@@ -420,7 +420,6 @@
     await sleep(850);
     paper.classList.remove("f1"); // 위쪽 절반 펼치기
     await sleep(850);
-    paper.classList.add("taped");
 
     lastPickId = pick.id;
     resultAnnounce.textContent = `뽑힌 단어: ${pick.text}`;

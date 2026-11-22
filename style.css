@@ -253,21 +253,6 @@ body {
   overflow-wrap: anywhere;
 }
 
-/* 마스킹 테이프 */
-.tape {
-  position: absolute;
-  top: -11px;
-  left: 50%;
-  width: 30%;
-  height: 24px;
-  transform: translateX(-50%) translateZ(4px) rotate(-1.5deg);
-  background: rgba(228, 228, 220, 0.72);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
-.paper.taped .tape { opacity: 1; }
 
 /* ---------- 컨트롤 ---------- */
 .controls {
@@ -456,7 +441,7 @@ textarea:focus { outline: none; border-color: var(--accent); }
 .drawn-box { margin-top: 16px; padding-top: 6px; border-top: 1px dashed var(--line); }
 
 @media (prefers-reduced-motion: reduce) {
-  .slip, .paper, .flap, .col-left, .tape { transition-duration: 0.01s !important; }
+  .slip, .paper, .flap, .col-left { transition-duration: 0.01s !important; }
   .screen { animation: none; }
 }
 
