@@ -2,9 +2,12 @@
   "use strict";
 
   const STORAGE_KEY = "randomdraw.words.v1";
-  const MAX_VISUAL_SLIPS = 24;
-  const SLIP_W = 60;
-  const SLIP_H = 43;
+  const MAX_VISUAL_SLIPS = 400; // 너무 많을 때 화면이 버벅이지 않도록 하는 상한
+  const BASE_SLIP_W = 60;
+  const BASE_SLIP_H = 43;
+  // 쪽지 수에 따라 크기가 바뀜 (renderPile에서 계산)
+  let SLIP_W = BASE_SLIP_W;
+  let SLIP_H = BASE_SLIP_H;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // ---------- 상태 ----------
@@ -309,6 +312,14 @@
   function renderPile() {
     pile.innerHTML = "";
     const n = Math.min(candidates().length, MAX_VISUAL_SLIPS);
+    // 남은 쪽지를 모두 보여주되, 많으면 무대에 들어가도록 쪽지를 작게
+    const { w, h } = stageSize();
+    const fit = n ? Math.sqrt((w * h * 0.5) / (n * BASE_SLIP_W * BASE_SLIP_H)) : 1;
+    const k = Math.max(0.45, Math.min(1, fit));
+    SLIP_W = Math.round(BASE_SLIP_W * k);
+    SLIP_H = Math.round(BASE_SLIP_H * k);
+    pile.style.setProperty("--slip-w", SLIP_W + "px");
+    pile.style.setProperty("--slip-h", SLIP_H + "px");
     for (let i = 0; i < n; i++) {
       const s = document.createElement("div");
       s.className = "slip";
@@ -391,9 +402,10 @@
     // 2) 가운데로 모으기
     const { w, h } = stageSize();
     pile.classList.add("gather");
+    const spread = Math.min(Math.min(w, h) * 0.3, 20 + Math.sqrt(slips.length) * 8);
     slips.forEach((s) => {
-      const x = w / 2 - SLIP_W / 2 + rand(-30, 30);
-      const y = h / 2 - SLIP_H / 2 + rand(-22, 22);
+      const x = w / 2 - SLIP_W / 2 + rand(-spread, spread);
+      const y = h / 2 - SLIP_H / 2 + rand(-spread * 0.7, spread * 0.7);
       s.style.transform = `translate(${x}px, ${y}px) rotate(${rand(-30, 30)}deg)`;
     });
     await sleep(520);
